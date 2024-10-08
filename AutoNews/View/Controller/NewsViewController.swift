@@ -134,4 +134,33 @@ extension NewsViewController: UICollectionViewDataSource, UICollectionViewDelega
             viewModel.loadMoreNews()
         }
     }
+    
+    // MARK: - Animations
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? NewsCell else { return }
+
+        UIView.animate(withDuration: 0.2, animations: {
+            cell.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.2, animations: {
+                cell.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+            }, completion: { _ in
+                UIView.animate(withDuration: 0.2, animations: {
+                    cell.transform = CGAffineTransform.identity
+                }, completion: { _ in
+                    let selectedNews = self.viewModel.newsList[indexPath.item]
+                    let detailVC = NewsDetailViewController(newsItem: selectedNews)
+                    self.present(detailVC, animated: true, completion: nil)
+                })
+            })
+        })
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? NewsCell else { return }
+        UIView.animate(withDuration: 0.2) {
+            cell.transform = CGAffineTransform.identity
+        }
+    }
 }
