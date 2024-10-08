@@ -13,6 +13,7 @@ final class NewsViewModel: ObservableObject {
     // MARK: - Published
     
     @Published var newsList: [NewsItem] = []
+    @Published var oldNewsList: [NewsItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
     

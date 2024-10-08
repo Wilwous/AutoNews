@@ -15,6 +15,8 @@ final class NewsCell: UICollectionViewCell {
     
     // MARK: - UI Components
     
+    private lazy var loadingView = LoadingView()
+    
     private lazy var newsImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -83,11 +85,12 @@ final class NewsCell: UICollectionViewCell {
         dateLabel.text = DateFormatterHelper.formatDate(from: news.publishedDate)
         categoryLabel.text = news.categoryType
         newsImageView.alpha = 0.0
-        
+        loadingView.showLoader(in: contentView)
         ImageLoader.loadImage(from: news.titleImageUrl) { [weak self] image in
             self?.newsImageView.image = image
             UIView.animate(withDuration: 0.3) {
                 self?.newsImageView.alpha = 1.0
+                self?.loadingView.hideLoader()
             }
         }
     }
