@@ -62,13 +62,29 @@ final class NewsViewController: UIViewController {
     private func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, environment) -> NSCollectionLayoutSection? in
             let availableWidth = environment.container.effectiveContentSize.width
-            let itemWidth = availableWidth - 20
             
+            // Количество колонок в зависимости от ширины экрана (iPhone - 1 колонка, iPad - 2+ колонки)
+            let columns: Int
+            let spacing: CGFloat
+            
+            if availableWidth > 600 {
+                columns = 2  // iPad - 2 колонки
+                spacing = 20  // Увеличенный отступ для iPad
+            } else {
+                columns = 1  // iPhone - 1 колонка
+                spacing = 8 // Стандартный отступ для iPhone
+            }
+
+            // Вычисляем ширину элемента с учетом отступов между колонками
+            let totalSpacing = spacing * CGFloat(columns + 1)  // Отступы между колонками + внешние отступы
+            let itemWidth = (availableWidth - totalSpacing) / CGFloat(columns)
+
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .absolute(itemWidth),
                 heightDimension: .absolute(320)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: spacing, bottom: 0, trailing: spacing)  // Отступы вокруг каждого элемента
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -77,8 +93,8 @@ final class NewsViewController: UIViewController {
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             let section = NSCollectionLayoutSection(group: group)
-            section.interGroupSpacing = 10
-            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+            section.interGroupSpacing = spacing  // Отступ между строками
+            section.contentInsets = NSDirectionalEdgeInsets(top: spacing, leading: spacing, bottom: spacing, trailing: spacing)
             
             return section
         }

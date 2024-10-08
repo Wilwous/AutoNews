@@ -17,7 +17,9 @@ final class NewsDetailViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.font = UIDevice.current.userInterfaceIdiom == .pad ?
+        UIFont.boldSystemFont(ofSize: 28) :
+        UIFont.boldSystemFont(ofSize: 24)
         label.numberOfLines = 0
         label.textAlignment = .center
         
@@ -27,16 +29,19 @@ final class NewsDetailViewController: UIViewController {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         
         return imageView
     }()
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        // 🎪 Адаптация размера шрифта для iPad и iPhone
+        label.font = UIDevice.current.userInterfaceIdiom == .pad ?
+        UIFont.systemFont(ofSize: 20) :  // iPad
+        UIFont.systemFont(ofSize: 16)    // iPhone
         label.numberOfLines = 0
         label.textAlignment = .left
-        
         return label
     }()
     
@@ -48,12 +53,9 @@ final class NewsDetailViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.addTarget(
             self,
-            action: #selector(
-                backButtonTapped
-            ),
+            action: #selector(backButtonTapped),
             for: .touchUpInside
         )
-        
         return button
     }()
     
@@ -92,19 +94,21 @@ final class NewsDetailViewController: UIViewController {
     }
     
     private func setupLayoutConstraint() {
+        let sidePadding: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 100 : 16
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
             
-            imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
             imageView.heightAnchor.constraint(equalToConstant: 300),
             
-            descriptionLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 6),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            descriptionLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding),
             
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             backButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),

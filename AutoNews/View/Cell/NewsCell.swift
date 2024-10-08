@@ -122,8 +122,8 @@ final class NewsCell: UICollectionViewCell {
             dateLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8),
             
             categoryLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 5),
-            categoryLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 110),
-            categoryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -110),
+            categoryLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 100),
+            categoryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100),
             categoryLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8),
             categoryLabel.heightAnchor.constraint(equalToConstant: 24)
         ])
