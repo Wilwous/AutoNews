@@ -14,6 +14,7 @@ final class NewsViewModel: ObservableObject {
     
     @Published var newsList: [NewsItem] = []
     @Published var isLoading = false
+    @Published var errorMessage: String?
     
     // MARK: - Private Properties
     
@@ -32,8 +33,8 @@ final class NewsViewModel: ObservableObject {
                     self.isLoading = false
                 }
             } catch {
-                print("Failed to load news: \(error)")
                 self.isLoading = false
+                self.errorMessage = "Не удалось загрузить новости. Попробуйте позже."
             }
         }
     }

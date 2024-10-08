@@ -94,6 +94,14 @@ final class NewsViewController: UIViewController {
                 self.collectionView.reloadData()
             }
             .store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                guard let self = self, let errorMessage = errorMessage else { return }
+                AlertHelper.showAlert(on: self, title: "Ошибка", message: errorMessage)
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -139,7 +147,7 @@ extension NewsViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? NewsCell else { return }
-
+        
         UIView.animate(withDuration: 0.2, animations: {
             cell.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         }, completion: { _ in
@@ -156,7 +164,7 @@ extension NewsViewController: UICollectionViewDataSource, UICollectionViewDelega
             })
         })
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? NewsCell else { return }
         UIView.animate(withDuration: 0.2) {
