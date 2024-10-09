@@ -7,7 +7,9 @@
 
 import Foundation
 
-final class NetworkService {
+// MARK: - Network
+
+actor NetworkService {
     
     // MARK: - Static
     
